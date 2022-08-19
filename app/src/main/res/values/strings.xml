@@ -6,4 +6,5 @@
     <string name="inputHostPortLabel">Host Port</string>
     <string name="inputCodeLabel">Code</string>
     <string name="saveBtn">Save</string>
+    <string name="oddsBtn">Odds</string>
 </resources>

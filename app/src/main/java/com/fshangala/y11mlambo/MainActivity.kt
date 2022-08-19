@@ -13,9 +13,10 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OddsDialogFragment.OddsDialogListener {
     private var webView: WebView? = null
     private var model: MasterViewModel? = null
     private var masterStatus: TextView? = null
@@ -89,6 +90,10 @@ class MainActivity : AppCompatActivity() {
                 openConfig()
             }
 
+            R.id.oddsBtn -> {
+                showOddsDialog()
+            }
+
             R.id.reconnectBtn -> {
                 model!!.createConnection(sharedPref!!)
             }
@@ -99,5 +104,18 @@ class MainActivity : AppCompatActivity() {
     private fun openConfig(){
         val intent = Intent(this,ConfigActivity::class.java)
         startActivity(intent)
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment) {
+        dialog.dismiss()
+    }
+
+    override fun onDialogNegativeClick(dialog: DialogFragment) {
+        dialog.dismiss()
+    }
+
+    private fun showOddsDialog() {
+        val dialog = OddsDialogFragment()
+        dialog.show(supportFragmentManager, "OddsDialog")
     }
 }

@@ -8,6 +8,11 @@
         android:title="@string/reconnectBtn"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/oddsBtn"
+        android:icon="@android:drawable/ic_menu_send"
+        android:title="@string/oddsBtn"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/preferencesBtn"
         android:icon="@android:drawable/ic_menu_manage"
         android:title="@string/preferencesBtn"
