@@ -58,10 +58,14 @@ open class Y11ViewModel : ViewModel() {
     }
 
     fun sendCommand(data:AutomationObject){
-        try {
-            this.appSocket?.send(data.toString())
-        } catch (ex: Exception) {
-            connectionStatus.value = ex.toString()
+        if (connected.value == true){
+            try {
+                this.appSocket?.send(data.toString())
+            } catch (ex: Exception) {
+                connectionStatus.value = ex.toString()
+            }
+        } else {
+            connectionStatus.value = "Failed! You are disconnected!"
         }
     }
 }

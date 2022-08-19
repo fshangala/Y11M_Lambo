@@ -7,4 +7,8 @@
     <string name="inputCodeLabel">Code</string>
     <string name="saveBtn">Save</string>
     <string name="oddsBtn">Odds</string>
+    <string name="teamLabel">Team</string>
+    <string name="backlayLabel">Back/Lay</string>
+    <string name="oddsLabel">Odds</string>
+    <string name="stakeLabel">Stake</string>
 </resources>

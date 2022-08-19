@@ -38,6 +38,10 @@ class MainActivity : AppCompatActivity(), OddsDialogFragment.OddsDialogListener 
             toast = Toast.makeText(this,it,Toast.LENGTH_SHORT)
             toast!!.show()
         }
+        model!!.automationEvents.observe(this) {
+            toast = Toast.makeText(this,it.toString(),Toast.LENGTH_SHORT)
+            toast!!.show()
+        }
         model!!.createConnection(sharedPref!!)
     }
 
@@ -106,7 +110,14 @@ class MainActivity : AppCompatActivity(), OddsDialogFragment.OddsDialogListener 
         startActivity(intent)
     }
 
-    override fun onDialogPositiveClick(dialog: DialogFragment) {
+    override fun onDialogPositiveClick(dialog: DialogFragment,oddsData: OddsData) {
+        val automationObject = AutomationObject("bet","place_bet", arrayOf<String>(
+            oddsData.team,
+            oddsData.backlay,
+            oddsData.odds.toString(),
+            oddsData.stake.toString()
+        ))
+        model!!.sendCommand(automationObject)
         dialog.dismiss()
     }
 
