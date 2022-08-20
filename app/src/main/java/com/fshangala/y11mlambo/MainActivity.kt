@@ -39,37 +39,68 @@ class MainActivity : AppCompatActivity(), OddsDialogFragment.OddsDialogListener 
             toast!!.show()
         }
         model!!.automationEvents.observe(this) {
-            toast = Toast.makeText(this,it.toString(),Toast.LENGTH_SHORT)
+            if (it.eventName == "place_bet") {
+                placeBet(it)
+            }
+            toast = Toast.makeText(this,it.eventArgs.toString(),Toast.LENGTH_LONG)
             toast!!.show()
+        }
+        model!!.browserLoading.observe(this){
+            if (it == true) {
+                runOnUiThread {
+                    masterStatus!!.text = "Loading..."
+                }
+            } else {
+                runOnUiThread {
+                    masterStatus!!.text = "Loaded!"
+                }
+            }
         }
         model!!.createConnection(sharedPref!!)
     }
 
+    private fun placeBet(automationEvents: AutomationEvents) {
+        var Oteam = ""
+        var Obacklay = automationEvents.eventArgs[1]
+        var Oodds = automationEvents.eventArgs[2]
+        var Ostake = automationEvents.eventArgs[3]
+
+        if (automationEvents.eventArgs[0] == "team1"){
+            Oteam = "0"
+        } else if (automationEvents.eventArgs[0] == "team2"){
+            Oteam = "4"
+        }
+
+        webView!!.evaluateJavascript("document.querySelectorAll(\"$Obacklay-odd.exch-odd.button\")[$Oteam].click();"){
+            runOnUiThread{
+                masterStatus!!.text = it
+            }
+        }
+
+        SystemClock.sleep(200)
+
+        webView!!.evaluateJavascript(
+                    "document.querySelector(\".odds-ctn input\").value = $Oodds;"+
+                    "document.querySelector(\".stake-ctn input\").value = $Ostake;"+
+                    "document.querySelector(\".place-btn\").click();"
+        ) {
+            runOnUiThread{
+                masterStatus!!.text = it
+            }
+        }
+    }
+
     private fun startBrowser(){
-        val url = "https://jack9.io/d/index.html#/"
+        val url = "https://betbhai.com"
         webView!!.loadUrl(url)
         webView!!.webViewClient = object : WebViewClient(){
             override fun onPageFinished(view: WebView?, url: String?) {
-                SystemClock.sleep(5000)
-                view!!.evaluateJavascript("document.querySelector(\"input[name='loginName']\").value='fishing'"){
-                    runOnUiThread{
-                        masterStatus!!.text = it
-                    }
-                }
-                view.evaluateJavascript("document.querySelector(\"input[name='password']\").value='somebody'"){
-                    runOnUiThread{
-                        masterStatus!!.text = it
-                    }
-                }
-                runOnUiThread{
-                    masterStatus!!.text = "Loaded!"
-                }
+                model!!.browserLoading.value = false
+                //SystemClock.sleep(5000)
             }
 
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                runOnUiThread{
-                    masterStatus!!.text = "Loading..."
-                }
+                model!!.browserLoading.value = true
             }
         }
     }

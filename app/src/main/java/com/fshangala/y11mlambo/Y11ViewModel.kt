@@ -46,7 +46,7 @@ open class Y11ViewModel : ViewModel() {
                     connected.postValue(false)
                 }
             })
-            appClient.dispatcher.executorService.shutdown()
+            //appClient.dispatcher.executorService.shutdown()
         } catch (ex: Exception){
             connectionStatus.value = ex.toString()
             connected.postValue(false)
@@ -54,7 +54,7 @@ open class Y11ViewModel : ViewModel() {
     }
 
     fun disconnect() {
-        appSocket!!.close(1000,"Disconnecting.")
+        appSocket!!.close(1000,"Disconnected.")
     }
 
     fun sendCommand(data:AutomationObject){
