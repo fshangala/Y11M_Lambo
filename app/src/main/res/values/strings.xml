@@ -11,4 +11,5 @@
     <string name="backlayLabel">Back/Lay</string>
     <string name="oddsLabel">Odds</string>
     <string name="stakeLabel">Stake</string>
+    <string name="reloadbrowserbtn">Reload Browser</string>
 </resources>

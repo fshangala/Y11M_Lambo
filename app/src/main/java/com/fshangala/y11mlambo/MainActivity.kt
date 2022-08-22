@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.view.Menu
 import android.view.MenuItem
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.TextView
@@ -27,7 +28,10 @@ class MainActivity : AppCompatActivity(), OddsDialogFragment.OddsDialogListener 
         setContentView(R.layout.activity_main)
 
         webView = findViewById(R.id.webView)
-        true.also { webView!!.settings.javaScriptEnabled = it }
+        true.also {
+            webView!!.settings.javaScriptEnabled = it
+            webView!!.settings.domStorageEnabled = it
+        }
         model = ViewModelProvider(this)[MasterViewModel::class.java]
         sharedPref = getSharedPreferences("MySettings", Context.MODE_PRIVATE)
         masterStatus = findViewById(R.id.masterStatus)
@@ -91,9 +95,10 @@ class MainActivity : AppCompatActivity(), OddsDialogFragment.OddsDialogListener 
     }
 
     private fun startBrowser(){
-        val url = "https://betbhai.com"
+        val url = "https://betbhai.com/home"
         webView!!.loadUrl(url)
         webView!!.webViewClient = object : WebViewClient(){
+
             override fun onPageFinished(view: WebView?, url: String?) {
                 model!!.browserLoading.value = false
                 //SystemClock.sleep(5000)
@@ -110,9 +115,9 @@ class MainActivity : AppCompatActivity(), OddsDialogFragment.OddsDialogListener 
 
         model!!.connected.observe(this){
             if (it){
-                menu.getItem(0).setIcon(R.mipmap.reset_green_round)
+                menu.getItem(1).setIcon(R.mipmap.reset_green_round)
             } else {
-                menu.getItem(0).setIcon(R.mipmap.reset_red_round)
+                menu.getItem(1).setIcon(R.mipmap.reset_red_round)
             }
         }
 
@@ -131,6 +136,10 @@ class MainActivity : AppCompatActivity(), OddsDialogFragment.OddsDialogListener 
 
             R.id.reconnectBtn -> {
                 model!!.createConnection(sharedPref!!)
+            }
+
+            R.id.reloadBrowserBtn -> {
+                webView!!.reload()
             }
         }
         return super.onOptionsItemSelected(item)

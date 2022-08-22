@@ -3,14 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/oddsBtn"
+        android:icon="@android:drawable/ic_menu_send"
+        android:title="@string/oddsBtn"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/reconnectBtn"
         android:icon="@android:drawable/ic_popup_sync"
         android:title="@string/reconnectBtn"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/oddsBtn"
-        android:icon="@android:drawable/ic_menu_send"
-        android:title="@string/oddsBtn"
+        android:id="@+id/reloadBrowserBtn"
+        android:icon="@android:drawable/ic_popup_sync"
+        android:title="@string/reloadbrowserbtn"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/preferencesBtn"
