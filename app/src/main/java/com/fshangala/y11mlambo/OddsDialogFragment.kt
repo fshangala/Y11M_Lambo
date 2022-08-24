@@ -16,6 +16,7 @@ class OddsDialogFragment: DialogFragment() {
     interface OddsDialogListener {
         fun onDialogPositiveClick(dialog: DialogFragment,oddsData: OddsData)
         fun onDialogNegativeClick(dialog: DialogFragment)
+        fun openBet(dialog: DialogFragment, oddsData: OddsData)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -33,11 +34,21 @@ class OddsDialogFragment: DialogFragment() {
                 val odds = dialogView.findViewById<EditText>(R.id.oddsInput)
                 val stake = dialogView.findViewById<EditText>(R.id.stakeInput)
 
+                var oddsvalue = 0.0
+                if (odds.text.toString() != "") {
+                    oddsvalue = odds.text.toString().toDouble()
+                }
+
+                var stakevalue = 0.0
+                if (stake.text.toString() != ""){
+                    stakevalue = stake.text.toString().toDouble()
+                }
+
                 val oddsData = OddsData(
                     team.selectedItem.toString(),
                     backlay.selectedItem.toString(),
-                    odds.text.toString().toDouble(),
-                    stake.text.toString().toDouble()
+                    oddsvalue,
+                    stakevalue
                 )
                 listener.onDialogPositiveClick(this,oddsData)
             })
@@ -45,6 +56,31 @@ class OddsDialogFragment: DialogFragment() {
                 DialogInterface.OnClickListener { dialog, id ->
                     // Send the negative button event back to the host activity
                     listener.onDialogNegativeClick(this)
+                })
+                .setNeutralButton("Open bet",
+                DialogInterface.OnClickListener{dialog,id ->
+                    val team = dialogView.findViewById<Spinner>(R.id.teamSpinner)
+                    val backlay = dialogView.findViewById<Spinner>(R.id.backlaySpinner)
+                    val odds = dialogView.findViewById<EditText>(R.id.oddsInput)
+                    val stake = dialogView.findViewById<EditText>(R.id.stakeInput)
+
+                    var oddsvalue = 0.0
+                    if (odds.text.toString() != "") {
+                        oddsvalue = odds.text.toString().toDouble()
+                    }
+
+                    var stakevalue = 0.0
+                    if (stake.text.toString() != ""){
+                        stakevalue = stake.text.toString().toDouble()
+                    }
+
+                    val oddsData = OddsData(
+                        team.selectedItem.toString(),
+                        backlay.selectedItem.toString(),
+                        oddsvalue,
+                        stakevalue
+                    )
+                    listener.openBet(this,oddsData)
                 })
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
